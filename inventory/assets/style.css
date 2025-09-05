@@ -1,0 +1,103 @@
+/* Reset default spacing */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    background-color: #f5f7fa;
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 220px;
+    background-color: #134e4a; /* Modern dark teal */
+    color: white;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+}
+
+.sidebar h2 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin: 12px 0;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: #115e59; /* Slightly lighter on hover */
+}
+
+/* Main content area */
+.main-content, .flex-1 {
+    padding: 40px;
+    flex-grow: 1;
+    margin-left: 220px; /* Equal to sidebar width */
+    background-color: #ecf0f1;
+    min-height: 100vh;
+}
+
+/* Page titles */
+h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Add button */
+a.btn-add {
+    display: inline-block;
+    background-color: #16a34a;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+a.btn-add:hover {
+    background-color: #15803d;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+th {
+    background-color: #f4f4f4;
+    color: #374151;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+td {
+    padding: 12px 16px;
+    border-top: 1px solid #e5e7eb;
+    color: #4b5563;
+}
+
+tr:hover {
+    background-color: #f9fafb;
+}
