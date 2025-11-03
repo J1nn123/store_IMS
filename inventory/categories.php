@@ -69,43 +69,47 @@ $result = $conn->query("
     <!-- Add Category Form -->
     <form method="POST" class="bg-white p-6 rounded-xl shadow mb-8 max-w-md">
         <h2 class="text-xl font-semibold mb-4 text-gray-700">Add New Category</h2>
-        <input type="text" name="category_name" required placeholder="Category Name" class="w-full p-2 border border-gray-300 rounded mb-4" />
-        <button type="submit" name="add_category" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Category</button>
+        <input type="text" name="category_name" required placeholder="Category Name"
+            class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        <button type="submit" name="add_category"
+            class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition">+ Add Category</button>
     </form>
 
     <!-- Category Table -->
-  <div class="bg-white p-6 rounded-xl shadow">
-      <h2 class="text-xl font-semibold mb-4 text-gray-700">Category List</h2>
-    <div class="overflow-x-auto">
-        <table class="min-w-full text-left text-sm w-full">
-            <thead>
-                <tr class="bg-gray-200 text-gray-600 uppercase">
-                    <th class="py-3 px-4">Products Counts</th>
-                    <th class="py-3 px-4">Products Category</th>
-                    <th class="py-3 px-4">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="text-gray-700">
-                <!-- Your dynamic rows go here -->
-            </tbody>
-       
-                <?php while ($row = $result->fetch_assoc()): ?>
-                <tr class="border-t">
-                    <td class="py-2 px-4"><?php echo $row['category_id']; ?></td>
-                    <td class="py-2 px-4"><?php echo htmlspecialchars($row['name']); ?></td>
-                    <td class="py-2 px-4"><?php echo $row['product_count']; ?></td>
-                    <td class="py-2 px-4">
-                        <button onclick="openEditModal('<?php echo $row['category_id']; ?>', '<?php echo htmlspecialchars(addslashes($row['name'])); ?>')" class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500">Edit</button>
-                        <?php if ($row['product_count'] == 0): ?>
-                            <a href="categories.php?delete=<?php echo $row['category_id']; ?>" onclick="return confirm('Are you sure?')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</a>
-                        <?php else: ?>
-                            <span class="text-gray-400 text-xs italic">In use</span>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+    <div class="bg-white p-6 rounded-xl shadow">
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">Category List</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-left text-sm w-full border border-gray-200 rounded-lg">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
+                        <th class="py-3 px-4">Category ID</th>
+                        <th class="py-3 px-4">Category Name</th>
+                        <th class="py-3 px-4">Product Count</th>
+                        <th class="py-3 px-4 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 divide-y divide-gray-200">
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="py-3 px-4 font-medium text-gray-900"><?= $row['category_id']; ?></td>
+                            <td class="py-3 px-4"><?= htmlspecialchars($row['name']); ?></td>
+                            <td class="py-3 px-4 text-center"><?= $row['product_count']; ?></td>
+                            <td class="py-3 px-4 text-center space-x-2">
+                                <button onclick="openEditModal('<?= $row['category_id']; ?>', '<?= htmlspecialchars(addslashes($row['name'])); ?>')"
+                                    class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500">Edit</button>
+                                <?php if ($row['product_count'] == 0): ?>
+                                    <a href="categories.php?delete=<?= $row['category_id']; ?>"
+                                        onclick="return confirm('Are you sure you want to delete this category?')"
+                                        class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</a>
+                                <?php else: ?>
+                                    <span class="text-gray-400 text-xs italic">In Use</span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -115,25 +119,30 @@ $result = $conn->query("
         <h2 class="text-xl font-bold mb-4">Edit Category</h2>
         <form method="POST">
             <input type="hidden" name="category_id" id="edit_id">
-            <input type="text" name="category_name" id="edit_name" class="w-full p-2 border border-gray-300 rounded mb-4" required>
+            <input type="text" name="category_name" id="edit_name"
+                class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required>
             <div class="flex justify-end">
-                <button type="button" onclick="closeEditModal()" class="mr-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
-                <button type="submit" name="update_category" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Update</button>
+                <button type="button" onclick="closeEditModal()"
+                    class="mr-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+                <button type="submit" name="update_category"
+                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Update</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-function openEditModal(id, name) {
-    document.getElementById('edit_id').value = id;
-    document.getElementById('edit_name').value = name;
-    document.getElementById('editModal').classList.remove('hidden');
-    document.getElementById('editModal').classList.add('flex');
-}
-function closeEditModal() {
-    document.getElementById('editModal').classList.add('hidden');
-}
+    function openEditModal(id, name) {
+        document.getElementById('edit_id').value = id;
+        document.getElementById('edit_name').value = name;
+        document.getElementById('editModal').classList.remove('hidden');
+        document.getElementById('editModal').classList.add('flex');
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').classList.add('hidden');
+    }
 </script>
 
 <?php include 'includes/footer.php'; ?>

@@ -1,33 +1,24 @@
 
-// 📁 assets/js/script.js
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("Dashboard loaded");
-
-    // Example: Chart.js sample
-    const chartCanvas = document.getElementById('productChart');
-    if (chartCanvas) {
-        new Chart(chartCanvas, {
-            type: 'bar',
-            data: {
-                labels: ['Product A', 'Product B', 'Product C'],
-                datasets: [{
-                    label: 'Stock Levels',
-                    data: [12, 19, 3],
-                    backgroundColor: ['#3498db', '#2ecc71', '#e74c3c']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Inventory Overview'
-                    }
-                }
-            }
-        });
+const ctx = document.getElementById('salesChart').getContext('2d');
+const salesChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: <?php echo $monthlyLabels; ?>,
+    datasets: [{
+      label: 'Sales (₱)',
+      data: <?php echo json_encode(array_values($monthlySales)); ?>,
+      borderColor: '#1D4ED8',
+      backgroundColor: 'rgba(29, 78, 216, 0.1)',
+      fill: true,
+      tension: 0.3,
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
     }
+  }
 });
