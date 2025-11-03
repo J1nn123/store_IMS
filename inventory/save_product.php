@@ -18,7 +18,7 @@ $price = floatval($_POST['price']);
 if ($product_id > 0) {
     // Update existing product
     $sql = "UPDATE products SET 
-            name = '$name',
+            name = '$product_name,
             category_id = $category_id,
             supplier_id = $supplier_id,
             quantity = $quantity,
@@ -26,8 +26,8 @@ if ($product_id > 0) {
             WHERE product_id = $product_id";
 } else {
     // Insert new product
-    $sql = "INSERT INTO products (name, category_id, supplier_id, quantity, price) 
-            VALUES ('$name', $category_id, $supplier_id, $quantity, $price)";
+    $sql = "INSERT INTO products (product_name, category_id, supplier_id, quantity, price) 
+            VALUES ('$product_name', $category_id, $supplier_id, $quantity, $price)";
 }
 
 if ($conn->query($sql) === TRUE) {
@@ -38,4 +38,3 @@ if ($conn->query($sql) === TRUE) {
 }
 
 $conn->close();
-?>
