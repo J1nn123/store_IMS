@@ -55,15 +55,17 @@ if ($search !== '') {
 ?>
 
 <table class="min-w-full text-sm">
-  <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold tracking-wider">
-    <tr>
-      <th class="px-4 py-3">Image</th>
-      <th class="px-4 py-3">Product Name</th>
-      <th class="px-4 py-3">Total Quantity</th>
-      <th class="px-4 py-3">Average Price (₱)</th>
-      <th class="px-4 py-3">First Added</th>
-      <th class="px-4 py-3 text-center">Actions</th>
-    </tr>
+  
+ <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold tracking-wider">
+  <tr>
+    <th class="px-4 py-3 text-left">Product</th>
+    <th class="px-4 py-3 text-center">Total Quantity</th>
+    <th class="px-4 py-3 text-center">SRP (₱)</th>
+    <th class="px-4 py-3 text-center">First Added</th>
+    <th class="px-4 py-3 text-center">Actions</th>
+  </tr>
+</thead>
+
   </thead>
  <tbody class="divide-y divide-gray-200">
 <?php
@@ -78,19 +80,31 @@ if ($result && $result->num_rows > 0) {
       : htmlspecialchars($row['total_quantity']);
 
     echo "
-    <tr class='hover:bg-gray-50 transition duration-150'>
-      <td class='px-4 py-3'>
-        <img src='".htmlspecialchars($imagePath)."' alt='Product Image' class='w-14 h-14 object-cover rounded-lg border border-gray-300 shadow-sm'>
-      </td>
-      <td class='px-4 py-3 font-medium text-gray-900'>".htmlspecialchars($row['product_name'])."</td>
-      <td class='px-4 py-3 text-gray-600'>{$quantityDisplay}</td>
-      <td class='px-4 py-3 font-semibold text-green-700'>₱".number_format($row['avg_price'],2)." <span class='text-gray-500 text-xs'>(each)</span></td>
-      <td class='px-4 py-3 text-gray-500'>".htmlspecialchars($row['first_added'])."</td>
-      <td class='px-4 py-3 text-center space-x-3'>
-        <a href='edit_product.php?id={$id}' class='text-blue-600 hover:text-blue-800 font-medium'>Edit</a>
-        <a href='delete_product.php?product_id={$id}' class='text-red-600 hover:text-red-800 font-medium' onclick=\"return confirm('Are you sure you want to delete this product?')\">Delete</a>
-      </td>
-    </tr>";
+   <tr class='hover:bg-gray-50 transition duration-150'>
+  <td class='px-4 py-3'>
+    <div class='flex items-center space-x-3'>
+      <img src='".htmlspecialchars($imagePath)."' 
+           alt='Product Image' 
+           class='w-12 h-12 object-cover rounded-md border border-gray-300 shadow-sm'>
+      <span class='font-medium text-gray-900'>".htmlspecialchars($row['product_name'])."</span>
+    </div>
+  </td>
+  <td class='px-4 py-3 text-gray-600 text-center align-middle'>
+    {$quantityDisplay}
+  </td>
+  <td class='px-4 py-3 text-center font-semibold text-green-700 align-middle'>
+    ₱".number_format($row['avg_price'],2)." 
+    <span class='text-gray-500 text-xs'>(each)</span>
+  </td>
+  <td class='px-4 py-3 text-gray-500 text-center align-middle'>
+    ".htmlspecialchars($row['first_added'])."
+  </td>
+  <td class='px-4 py-3 text-center space-x-3 align-middle'>
+    <a href='edit_product.php?id={$id}' class='text-blue-600 hover:text-blue-800 font-medium'>Edit</a>
+    <a href='delete_product.php?product_id={$id}' class='text-red-600 hover:text-red-800 font-medium' onclick=\"return confirm('Are you sure you want to delete this product?')\">Delete</a>
+  </td>
+</tr>
+";
   }
 } else {
   echo "<tr><td colspan='6' class='text-center text-gray-500 py-6'>No products found</td></tr>";
