@@ -1,17 +1,31 @@
 <?php 
+
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+
 include 'includes/db.php'; 
 include 'includes/header.php'; 
 include 'includes/sidebar.php'; 
 ?>
 
+
+
 <div class="flex-1 p-10">
+ 
   <div class="flex justify-between items-center mb-6">
     <h2 class="text-3xl font-bold text-gray-800">Products Dashboard</h2>
    <div class="text-right mb-6">
  <a href="add_product.php"
      class="bg-green-600 text-white px-5 py-2 rounded-lg shadow hover:bg-green-700 transition duration-200">
      + Add Product
+    
   </a>
+  
 </div>
 
   </div> 

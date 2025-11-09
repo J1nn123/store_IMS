@@ -1,4 +1,18 @@
 <?php
+
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+//admin only restriction
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: no_access.php");
+    exit;
+} 
 // suppliers.php
 include 'includes/db.php';
 include 'includes/header.php';
