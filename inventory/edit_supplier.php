@@ -1,5 +1,22 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+//admin only restriction
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: no_access.php");
+    exit;
+} 
+
 include 'includes/db.php';
+
+
+
 $id = $_GET['id'];
 $result = $conn->query("SELECT * FROM suppliers WHERE supplier_id = $id");
 $supplier = $result->fetch_assoc();

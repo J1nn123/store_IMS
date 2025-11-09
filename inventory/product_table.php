@@ -1,5 +1,8 @@
+
+
 <?php
 include 'includes/db.php';
+
 
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'date_desc'; // default to newest first
@@ -53,6 +56,7 @@ if ($search !== '') {
 
 
 ?>
+
 
 <table class="min-w-full text-sm">
   

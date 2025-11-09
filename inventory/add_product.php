@@ -1,7 +1,29 @@
-<?php include 'includes/db.php'; ?>
-<?php include 'includes/header.php'; ?>
-<?php include 'includes/sidebar.php'; ?>
+
+
+
+<?php 
+
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+//admin only restriction
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: no_access.php");
+    exit;
+} 
+
+include 'includes/db.php'; 
+include 'includes/header.php'; 
+include 'includes/sidebar.php'; ?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ 
+ </script>
+
 
 <!-- ✅ Modern Add Product Layout -->
 <div class="flex-1 flex justify-center items-center min-h-screen bg-gray-100">

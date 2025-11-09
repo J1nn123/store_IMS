@@ -1,5 +1,13 @@
 <?php
+//admin only restriction
+session_start();
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: no_access.php");
+    exit;
+} 
 include 'includes/db.php';
+
+
 header('Content-Type: application/json');
 
 

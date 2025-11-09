@@ -1,8 +1,15 @@
 
-?>
+
 <?php
+ session_start();
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: no_access.php");
+    exit;
+}
+
 include 'includes/db.php';
 include 'includes/sidebar.php';
+
 
 if (isset($_GET['id'])) {
     $sale_id = $_GET['id'];
