@@ -28,8 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $custom_prices = $_POST['custom_price'];
     $quantities = $_POST['quantity'];
 
-    // Combine duplicates before inserting
     $combined_items = [];
+
     for ($i = 0; $i < count($quantities); $i++) {
         $product_id = $product_ids[$i];
         $quantity = intval($quantities[$i]);
@@ -51,21 +51,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ];
             }
         } else {
+            // ✅ Check stock
+            $stmt_check = $conn->prepare("SELECT product_name, quantity, price FROM products WHERE product_id = ?");
+            $stmt_check->bind_param("i", $product_id);
+            $stmt_check->execute();
+            $result_check = $stmt_check->get_result();
+            $prod = $result_check->fetch_assoc();
+            $stmt_check->close();
+
+            if ($prod['quantity'] < $quantity) {
+                echo "
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Out of Stock!',
+                        text: 'Only {$prod['quantity']} unit(s) of {$prod['product_name']} available.',
+                    }).then(() => {
+                        window.history.back();
+                    });
+                </script>";
+                exit;
+            }
+
             $key = "product_" . $product_id;
             if (isset($combined_items[$key])) {
                 $combined_items[$key]['quantity'] += $quantity;
             } else {
-                $product_result->data_seek(0);
-                while ($prod = $product_result->fetch_assoc()) {
-                    if ($prod['product_id'] == $product_id) {
-                        $price = $prod['price'];
-                        break;
-                    }
-                }
                 $combined_items[$key] = [
                     'product_id' => $product_id,
                     'quantity' => $quantity,
-                    'price' => $price
+                    'price' => $prod['price']
                 ];
             }
         }
@@ -91,11 +107,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $quantity = $item['quantity'];
 
-            // Insert into sales_items
             $item_stmt->bind_param("iii", $sale_id, $product_id, $quantity);
             $item_stmt->execute();
 
-            // ✅ Update product inventory
+            // Update inventory
             $conn->query("UPDATE products SET quantity = quantity - $quantity WHERE product_id = $product_id");
         }
 
@@ -106,7 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -182,17 +196,24 @@ document.addEventListener('input', e => {
                     <div class="flex gap-4 mb-2">
                         <div class="w-2/5">
                             <label class="block mb-1 font-semibold">Product</label>
-                            <select name="product_id[]" onchange="toggleCustom(this);" required class="w-full px-4 py-2 border rounded">
-                                <option value="">Select product</option>
-                                <?php
-                                $product_result->data_seek(0);
-                                while ($product = $product_result->fetch_assoc()): ?>
-                                    <option value="<?= $product['product_id'] ?>" data-price="<?= $product['price'] ?>">
-                                        <?= htmlspecialchars($product['product_name']) ?> (₱<?= $product['price'] ?>)
-                                    </option>
-                                <?php endwhile; ?>
-                                <option value="custom">-- Custom Product --</option>
-                            </select>
+                                                   <select name="product_id[]" onchange="toggleCustom(this);" required class="w-full px-4 py-2 border rounded">
+    <option value="">Select product</option>
+    <?php
+    $product_result->data_seek(0);
+    while ($product = $product_result->fetch_assoc()):
+        $disabled = ($product['quantity'] <= 0) ? 'disabled' : '';
+        $colorStyle = ($product['quantity'] <= 0) ? 'color: red;' : '';
+        $label = htmlspecialchars($product['product_name']) . " (₱" . $product['price'] . ")";
+        if ($product['quantity'] <= 0) $label .= " - Out of Stock";
+    ?>
+        <option value="<?= $product['product_id'] ?>" data-price="<?= $product['price'] ?>" <?= $disabled ?> style="<?= $colorStyle ?>">
+            <?= $label ?>
+        </option>
+    <?php endwhile; ?>
+    <option value="custom">-- Custom Product --</option>
+</select>
+
+
                         </div>
                         <div class="w-1/5">
                             <label class="block mb-1 font-semibold">Quantity</label>

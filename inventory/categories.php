@@ -1,6 +1,6 @@
 
-
 <?php
+ob_start(); // Start output buffering
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -8,21 +8,15 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-//admin only restriction
-
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+// Admin only restriction
+if ($_SESSION['role'] !== 'admin') {
     header("Location: no_access.php");
     exit;
-} 
+}
 
 include 'includes/db.php';
-include 'includes/header.php';
-include 'includes/sidebar.php';
 
-  
-
-
-// Add Category
+// Handle add, update, delete BEFORE including header/sidebar
 if (isset($_POST['add_category'])) {
     $name = trim($_POST['category_name']);
     if (!empty($name)) {
@@ -35,7 +29,6 @@ if (isset($_POST['add_category'])) {
     exit;
 }
 
-// Update Category
 if (isset($_POST['update_category'])) {
     $category_id = $_POST['category_id'];
     $name = trim($_POST['category_name']);
@@ -49,11 +42,8 @@ if (isset($_POST['update_category'])) {
     exit;
 }
 
-// Delete Category
 if (isset($_GET['delete'])) {
     $category_id = $_GET['delete'];
-
-    // Check if any products belong to this category
     $check = $conn->prepare("SELECT COUNT(*) FROM products WHERE category_id = ?");
     $check->bind_param("i", $category_id);
     $check->execute();
@@ -67,10 +57,17 @@ if (isset($_GET['delete'])) {
         $stmt->execute();
         $stmt->close();
     }
-
     header("Location: categories.php");
     exit;
 }
+
+// Now safe to include header and sidebar
+include 'includes/header.php';
+include 'includes/sidebar.php';
+
+ob_end_flush(); // Send output buffer
+?>
+<?php
 
 // Fetch all categories with product counts
 $result = $conn->query("

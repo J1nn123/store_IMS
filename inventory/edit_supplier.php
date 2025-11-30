@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+include 'includes/db.php';
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
@@ -13,7 +15,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit;
 } 
 
-include 'includes/db.php';
+
 
 
 
@@ -38,10 +40,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="p-10">
     <h2 class="text-xl font-bold mb-4">Edit Supplier</h2>
     <form method="POST" class="space-y-4">
-        <input name="name" value="<?php echo htmlspecialchars($supplier['name']); ?>" class="border px-4 py-2 w-full">
-        <input name="contact_info" value="<?php echo htmlspecialchars($supplier['contact_info']); ?>" class="border px-4 py-2 w-full">
-        <input name="email" type="email" value="<?php echo htmlspecialchars($supplier['email']); ?>" class="border px-4 py-2 w-full">
-        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Update</button>
+        <input 
+    name="name" 
+    value="<?php echo htmlspecialchars($supplier['name']); ?>" 
+    placeholder="Enter supplier name"
+    class="border px-4 py-2 w-full"
+>
+
+<input 
+    name="contact_info" 
+    value="<?php echo htmlspecialchars($supplier['contact_info']); ?>" 
+    placeholder="Enter contact information"
+    class="border px-4 py-2 w-full"
+>
+
+<input 
+    name="email" 
+    type="text"
+    value="<?php echo htmlspecialchars($supplier['email'], ENT_QUOTES); ?>" 
+    placeholder="Enter email address"
+    class="border px-4 py-2 w-full"
+>
+
+        <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition">
+            Update Supplier
+        </button>
+
     </form>
 </div>
 

@@ -31,12 +31,12 @@
     <!-- Heading -->
      
     <h1 class="text-3xl font-extrabold text-red-500 mb-4">
-      OWNER ONLY!
+      Admin Only!
     </h1>
     
     <!-- Subtext -->
     <p class="text-gray-300 mb-8">
-      You don’t have permission to view this page.
+    You are not authorized to perform this action.
     </p>
     
     <!-- Go Back Button -->

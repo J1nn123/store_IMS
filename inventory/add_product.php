@@ -1,8 +1,4 @@
-
-
-
 <?php 
-
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -11,7 +7,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 //admin only restriction
-
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: no_access.php");
     exit;
@@ -19,11 +14,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
 include 'includes/db.php'; 
 include 'includes/header.php'; 
-include 'includes/sidebar.php'; ?>
+include 'includes/sidebar.php'; 
+?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
- 
- </script>
-
 
 <!-- ✅ Modern Add Product Layout -->
 <div class="flex-1 flex justify-center items-center min-h-screen bg-gray-100">
@@ -86,6 +79,13 @@ include 'includes/sidebar.php'; ?>
           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400">
       </div>
 
+      <!-- Expiration Date -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-1">Expiration Date</label>
+        <input type="date" name="expiration_date" id="expiration_date"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400">
+      </div>
+
       <!-- Price -->
       <div>
         <label class="block text-gray-700 font-semibold mb-1">Price (₱)</label>
@@ -112,8 +112,9 @@ include 'includes/sidebar.php'; ?>
   </div>
 </div>
 
-<!-- 🧠 AUTO-FETCH PRODUCT PRICE -->
+<!-- JS Scripts -->
 <script>
+// 🧠 AUTO-FETCH PRODUCT PRICE
 document.getElementById('product_name').addEventListener('blur', function() {
   let productName = this.value.trim();
   if (productName === '') return;
@@ -160,6 +161,7 @@ if (isset($_POST['submit'])) {
     $supplier_id = $_POST['supplier_id'];
     $quantity = intval($_POST['quantity']);
     $price = floatval($_POST['price']);
+    $expiration_date = !empty($_POST['expiration_date']) ? $conn->real_escape_string($_POST['expiration_date']) : NULL;
 
     // ✅ Add new supplier if chosen
     if ($supplier_id === 'add_new' && !empty($_POST['new_supplier_name'])) {
@@ -183,8 +185,8 @@ if (isset($_POST['submit'])) {
     }
 
     // ✅ Insert product
-    $sql = "INSERT INTO products (product_name, category_id, supplier_id, quantity, price, image, created_at)
-            VALUES ('$product_name', $category_id, $supplier_id, $quantity, $price, '$imagePath', NOW())";
+    $sql = "INSERT INTO products (product_name, category_id, supplier_id, quantity, price, image, expiration_date, created_at)
+            VALUES ('$product_name', $category_id, $supplier_id, $quantity, $price, '$imagePath', " . ($expiration_date ? "'$expiration_date'" : "NULL") . ", NOW())";
 
     if ($conn->query($sql) === TRUE) {
         echo "
