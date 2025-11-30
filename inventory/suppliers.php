@@ -59,7 +59,7 @@ include 'includes/sidebar.php';
           <td class ="px-4 py-2"><?php echo htmlspecialchars($row['email']); ?></td>
          <td class="px-4 py-2">
   <a href="edit_supplier.php?id=<?php echo $row['supplier_id']; ?>" class="text-blue-600 hover:underline">Edit</a>
-  |
+  
 
 </td>
 

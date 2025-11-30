@@ -56,7 +56,10 @@ $sales_result = $conn->query($sales_query);
 <body class="bg-gray-100 text-gray-800">
 
 <div class="max-w-5xl mx-auto mt-10 bg-white p-6 shadow-lg rounded-lg">
-    <h1 class="text-2xl font-bold mb-4 text-center">Sales Records</h1>
+    <h1 class="text-2xl font-bold mb-4 text-center">Sales Records </h1> 
+    <div class="mt-5  mb-5">
+        <a href="add_sales.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Add New Sale</a>
+    </div>
 
     <table class="min-w-full border border-gray-300 rounded">
         <thead class="bg-gray-200">
@@ -127,9 +130,7 @@ $sales_result = $conn->query($sales_query);
         </tbody>
     </table>
 
-    <div class="mt-6 text-center">
-        <a href="add_sales.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Add New Sale</a>
-    </div>
+
 </div>
 
 </body>

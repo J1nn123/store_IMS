@@ -65,7 +65,7 @@ if ($search !== '') {
     <th class="px-4 py-3 text-left">Product</th>
     <th class="px-4 py-3 text-center">Total Quantity</th>
     <th class="px-4 py-3 text-center">SRP (₱)</th>
-    <th class="px-4 py-3 text-center">First Added</th>
+    <th class="px-4 py-3 text-center">Date Added</th>
     <th class="px-4 py-3 text-center">Actions</th>
   </tr>
 </thead>
